@@ -3,12 +3,9 @@ var router = express.Router();
 const url = require('../constants/url')
 const mongoose = require('mongoose')
 
-mongoose.connect(url.dataBase)
-
-const db = mongoose.connection
-
-db.on('connected', (err) => {
+mongoose.connect(url.dataBase, { useNewUrlParser: true }, (err) => {
   console.log('err:', err)
+  console.log('连接成功:', err)
 })
 
 /* GET home page. */
