@@ -1,25 +1,35 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express')
+const router = express.Router()
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
 mongoose.connect(
-  'mongodb://houxiaochen:zhaozhao719@docdb-2022-01-20-10-20-34.cb4jxav3ugif.ap-south-1.docdb.amazonaws.com:27017/rankingList?retryWrites=false&authSource=admin',
+  '',
   { useNewUrlParser: true },
   (err) => {
-    console.log('err:', err)
-    console.log('连接成功:', err)
-    const SaveSchema = Schema({ result: Number })
-
-    const SaveModal = mongoose.modal('cats', SaveSchema)
-    const instance = new CatModal({ result: 20 })
-
-    instance.save((e, res) => {
-      console.log('e:', e)
-      console.log('res:', res)
-    })
+    if (err) {
+      console.log('连接数据库失败：', err)
+    } else {
+      console.log('连接数据库成功')
+    }
   }
 )
+
+/**
+  * 存储积分表数据结构
+  * 积分表
+  * @param result {Number} 积分
+ */
+const SaveSchema = new mongoose.Schema({
+  result: Number
+})
+
+// const SaveModal = mongoose.model('result', SaveSchema).insertMany({ result: 852 }, (error, res) => {
+//   if (error) {
+//     console.log(error)
+//   } else {
+//     console.log(`SaveSchema 表，'insert ok'`)
+//   }
+// })
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -28,19 +38,17 @@ router.get('/', function(req, res, next) {
 
 router.get('/api/search/ranking', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
-  res.send({
-    code: 0,
-    data: {
-      rankingList: [
-        { result: 958 },
-        { result: 800 },
-        { result: 754 },
-        { result: 425 },
-        { result: 251 },
-      ]
-    },
-    success: true
+
+  mongoose.model('result', SaveSchema).find({}, 'result -_id', (err, docs) => {
+    res.send({
+      code: 0,
+      data: {
+        rankingList: docs
+      },
+      success: true
+    })
   })
+
 })
 
 router.post('/api/save', (req, res, next) => {
