@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 
 mongoose.connect(
-  '',
+  'mongodb://root:5ZHAOzhao@dds-a2dcaf70ebd1df341837-pub.mongodb.ap-south-1.rds.aliyuncs.com:3717,dds-a2dcaf70ebd1df342383-pub.mongodb.ap-south-1.rds.aliyuncs.com:3717/admin?replicaSet=mgset-1050168670',
   { useNewUrlParser: true },
   (err) => {
     if (err) {
@@ -22,14 +22,6 @@ mongoose.connect(
 const SaveSchema = new mongoose.Schema({
   result: Number
 })
-
-// const SaveModal = mongoose.model('result', SaveSchema).insertMany({ result: 852 }, (error, res) => {
-//   if (error) {
-//     console.log(error)
-//   } else {
-//     console.log(`SaveSchema 表，'insert ok'`)
-//   }
-// })
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -53,6 +45,14 @@ router.get('/api/search/ranking', (req, res, next) => {
 
 router.post('/api/save', (req, res, next) => {
   console.log('req:', req)
+
+  // const SaveModal = mongoose.model('result', SaveSchema).insertMany({ result: 852 }, (error, res) => {
+  //   if (error) {
+  //     console.log(error)
+  //   } else {
+  //     console.log(`SaveSchema 表，'insert ok'`)
+  //   }
+  // })
 
   res.send({
     code: 0,
